@@ -9,8 +9,9 @@ use URI::Escape;
 =begin pod
 =head1 LWP::Simple
 
-    This class is a Perl 6 clone of Perl 5 LWP::Simple module.
-=head1 Available Methods:
+This class is a Perl 6 clone of Perl 5 LWP::Simple module.
+
+=head2 Methods:
 =end pod
 
 
@@ -33,8 +34,12 @@ my Int constant $default_stream_read_len = 2 * 1024;
 =begin pod
 =head2 B<base64encode>
 
-    method documentation.
+  Accepts two string parameter and returns a base64 encoded string.
+  
+  my $encoded_string = LWP::Simple.base64encode('someuser', 'somepass');
+  $encoded_string.say; 
 
+ $ c29tZXVzZXI6c29tZXBhc3M=
 =end pod
 
 
@@ -47,7 +52,27 @@ method base64encode ($user, $pass) {
 =begin pod
 =head2 B<get>
 
-    method documentation.
+  Accepts a url string and performs a get request.
+
+  my $html = LWP::Simple.get('http://www.w3.org/2006/11/mwbp-tests/test-encoding-8.html');
+  $html.say;
+ 
+  $
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
+      "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <title>Test of a iso-latin-1 page served as text/html with HTTP charset parameter set</title>
+  <link rel="stylesheet" href="/StyleSheets/public" />
+  </head>
+  <body>
+  <h1>Test Encoding 8</h1>
+  <p>If you see an e with an accute accent, below, PASS.</p>
+  <p>é</p>
+  <p><a href="test-encoding-9.html"> Next test</a> | <a href="index.xhtml">tests lists</a></p>
+  </body>
+  </html>
+  
 
 =end pod
 
@@ -58,7 +83,7 @@ method get (Str $url, %headers = {}) {
 =begin pod
 =head2 B<delete>
 
-    method documentation.
+  Accepts a url string and performs a delete request.
 
 =end pod
 
@@ -69,7 +94,7 @@ method delete (Str $url, %headers = {}) {
 =begin pod
 =head2 B<post>
 
-    method documetation.
+  Accepts a url string, header parameters and content-type definition to perform a post request.
 
 =end pod
 
@@ -81,7 +106,7 @@ method post (Str $url, %headers = {}, Any $content?) {
 =begin pod
 =head2 B<put>
 
-    method documentation.
+  Accepts a url string, header parameters and content-type definition to perform a put request.
 
 =end pod
 
