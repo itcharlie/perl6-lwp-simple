@@ -6,6 +6,14 @@ use MIME::Base64;
 use URI;
 use URI::Escape;
 
+=begin pod
+=head1 LWP::Simple
+
+    This class is a Perl 6 clone of Perl 5 LWP::Simple module.
+=head1 Available Methods:
+=end pod
+
+
 unit class LWP::Simple:auth<cosimo>:ver<0.090>;
 
 our $VERSION = '0.090';
@@ -22,27 +30,71 @@ my Buf $crlf = Buf.new(13, 10);
 my Buf $http_header_end_marker = Buf.new(13, 10, 13, 10);
 my Int constant $default_stream_read_len = 2 * 1024;
 
+=begin pod
+=head2 B<base64encode>
+
+    method documentation.
+
+=end pod
+
+
 method base64encode ($user, $pass) {
     my MIME::Base64 $mime .= new();
     my $encoded = $mime.encode_base64($user ~ ':' ~ $pass);
     return $encoded;
 }
 
+=begin pod
+=head2 B<get>
+
+    method documentation.
+
+=end pod
+
 method get (Str $url, %headers = {}) {
     self.request_shell(RequestType::GET, $url)
 }
+
+=begin pod
+=head2 B<delete>
+
+    method documentation.
+
+=end pod
 
 method delete (Str $url, %headers = {}) {
     self.request_shell(RequestType::DELETE, $url)
 }
 
+=begin pod
+=head2 B<post>
+
+    method documetation.
+
+=end pod
+
+
 method post (Str $url, %headers = {}, Any $content?) {
     self.request_shell(RequestType::POST, $url, %headers, $content)
 }
 
+=begin pod
+=head2 B<put>
+
+    method documentation.
+
+=end pod
+
 method put (Str $url, %headers = {}, Any $content?) {
     self.request_shell(RequestType::DELETE, $url, %headers, $content)
 }
+
+=begin pod
+=head2 B<request_shell>
+
+    method documentation.
+
+=end pod
 
 method request_shell (RequestType $rt, Str $url, %headers = {}, Any $content?) {
 
@@ -136,6 +188,13 @@ method request_shell (RequestType $rt, Str $url, %headers = {}, Any $content?) {
 
 }
 
+=begin pod
+=head2 B<parse_chunks>
+
+    method documentation.
+
+=end pod
+
 method parse_chunks(Blob $b is rw, $sock) {
     my Int ($line_end_pos, $chunk_len, $chunk_start) = (0) xx 3;
     my Blob $content = Blob.new();
@@ -207,6 +266,13 @@ method parse_chunks(Blob $b is rw, $sock) {
 #    say $b.subbuf(0, 100).decode('utf-8');
     die "Could not parse chunk header";
 }
+
+=begin pod
+=head2 B<make_request>
+
+    method documentation.
+
+=end pod
 
 method make_request (
     RequestType $rt, $host, Int() $port, $path, %headers, $content?, :$ssl
@@ -285,6 +351,13 @@ method make_request (
     return ($status, $resp_headers, $resp_content);
 }
 
+=begin pod
+=head2 B<get-header-end-pos>
+
+    method documentation.
+
+=end pod
+
 multi method get-header-end-pos(Blob:D $resp) returns Int {
     my Int $header_end_pos = 0;
     while ( $header_end_pos < $resp.bytes &&
@@ -298,6 +371,13 @@ multi method get-header-end-pos(Blob:U $resp) returns Int {
     0;
 }
 
+=begin pod
+=head2 B<got-header>
+
+    method documentation.
+
+=end pod
+
 multi method got-header(Blob:D $resp) returns Bool {
     my Int $header_end_pos = self.get-header-end-pos($resp);
     return $header_end_pos > 0 && $header_end_pos < $resp.bytes
@@ -306,6 +386,13 @@ multi method got-header(Blob:D $resp) returns Bool {
 multi method got-header(Blob:U $resp) returns Bool {
     return False;
 }
+
+=begin pod
+=head2 B<parse_response>
+
+    method documentation.
+
+=end pod
 
 method parse_response (Blob $resp) {
 
@@ -333,10 +420,24 @@ method parse_response (Blob $resp) {
 
 }
 
+=begin pod
+=head2 B<getprint>
+
+    method documentation.
+
+=end pod
+
 method getprint (Str $url) {
     my $out = self.get($url);
     if $out ~~ Buf { $*OUT.write($out) } else { say $out }
 }
+
+=begin pod
+=head2 B<getstore>
+
+    method documentation.
+
+=end pod
 
 method getstore (Str $url, Str $filename) {
     return unless defined $url;
@@ -357,6 +458,13 @@ method getstore (Str $url, Str $filename) {
     $fh.close; 
 }
 
+=begin pod
+=head2 B<parse_url>
+
+    method documentation.
+
+=end pod
+
 method parse_url (Str $url) {
     my URI $u .= new($url);
     my $path = $u.path_query;
@@ -374,6 +482,13 @@ method parse_url (Str $url) {
         } !! Nil
     );    
 }
+
+=begin pod
+=head2 B<stringify_headers>
+
+    method documentation.
+
+=end pod
 
 method stringify_headers (%headers) {
     my Str $str = '';
